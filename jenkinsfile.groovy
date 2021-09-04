@@ -37,7 +37,7 @@ pipeline {
             }
         }
 
-        stage('Deploy'){
+       /* stage('Deploy'){
             steps{
                 echo 'deploying application updates....'
                 withCredentials([[$class: 'AmazonWebServicesCredentialsBinding',
@@ -49,7 +49,7 @@ pipeline {
                   sh 'aws ec2 reboot-instances --instance-ids ${params.devserver}'
                 }
             }
-        }
+        }*/
 
         
     }
