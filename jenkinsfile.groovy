@@ -10,14 +10,14 @@ pipeline {
 
     stages {
         
-        stage('Source') {
-            steps {
+        //stage('Source') {
+            //steps {
                 // Get some code from a GitHub repository
-                 sh  'git clone https://github.com/cloudperis/spring-petclinic-main.git'
-                 sh 'ls'
+                 //sh  'git clone https://github.com/cloudperis/spring-petclinic-main.git'
+                 //sh 'ls'
 
-            }
-        }
+            //}
+        //}
         stage('Build') {
             steps{
                 sh "mvn package"
