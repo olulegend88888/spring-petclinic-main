@@ -2,43 +2,10 @@
 # install updates
 yum update -y
 
-# install apache httpd
-yum install httpd -y
+sudo amazon-linux-extras install java-openjdk11
 
-# install java 8
-yum install java-1.8.0 -y
-# remove java 1.7
 yum remove java-1.7.0-openjdk -y
 
-# create the working directory
-mkdir /opt/spring-pet-clinic
-# create configuration specifying the used profile
-echo "RUN_ARGS=--spring.profiles.active=ec2" > /opt/spring-pet-clinic/spring-pet-clinic.conf
+aws s3 cp s3://app-seun-pet-clinic/spring-petclinic-2.4.5.jar . --region=us-east-1
 
-# download the maven artifact from S3
-aws s3 cp s3://pet-clinic-shay/spring-petclinic-2.4.5.jar /opt/spring-pet-clinic/ --region=us-east-1
-
-# create a springpet user to run the app as a service
-useradd springpet
-# springpet login shell disabled
-chsh -s /sbin/nologin springpet
-chown springpet:springpet /opt/spring-pet-clinic/spring-petclinic-2.4.5.jar
-chmod 500 /opt/spring-pet-clinic/spring-petclinic-2.4.5.jar
-
-# create a symbolic link
-ln -s /opt/spring-pet-clinic/spring-petclinic-2.4.5.jar /etc/init.d/spring-pet-clinic
-
-# forward port 80 to 8080
-echo "<VirtualHost *:80>
-ProxyRequests Off
-ProxyPass / http://localhost:8080/
-ProxyPassReverse / http://localhost:8080/
-</VirtualHost>" >> /etc/httpd/conf/httpd.conf
-
-# start the httpd and spring-pet-clinic
-service httpd start
-service spring-pet-clinic start
-
-# automatically start httpd and spring-pet-clinic if this ec2 instance reboots
-chkconfig httpd on
-chkconfig spring-pet-clinic on
+java -jar spring-petclinic-2.4.5.jar

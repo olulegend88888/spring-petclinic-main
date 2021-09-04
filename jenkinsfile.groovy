@@ -37,19 +37,14 @@ pipeline {
             }
         }
 
-       /* stage('Deploy'){
+       stage('Deploy'){
             steps{
                 echo 'deploying application updates....'
-                withCredentials([[$class: 'AmazonWebServicesCredentialsBinding',
-                accessKeyVariable: 'AWS_ACCESS_KEY_ID',
-                credentialsId: 'aws-cred',
-                secretKeyVariable: 'AWS_SECRET_ACCESS_KEY'
-                ]])
-                {
-                  sh 'aws ec2 reboot-instances --instance-ids ${params.devserver}'
+                withCredentials([<object of type com.cloudbees.jenkins.plugins.awscredentials.AmazonWebServicesCredentialsBinding>]) {
+                 sh 'aws ec2 reboot-instances --instance-ids ${params.devserver}'
                 }
             }
-        }*/
+        }
 
         
     }
