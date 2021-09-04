@@ -37,10 +37,10 @@ pipeline {
             }
         }
 
-       stage('Deploy'){
+       stage('Deploy-Dev'){
             steps{
                 echo 'deploying application updates....'
-                withCredentials([<object of type com.cloudbees.jenkins.plugins.awscredentials.AmazonWebServicesCredentialsBinding>]) {
+                withAWS(credentials: 'Jenkins-user', region: 'us-east-1'){
                  sh 'aws ec2 reboot-instances --instance-ids ${params.devserver}'
                 }
             }
