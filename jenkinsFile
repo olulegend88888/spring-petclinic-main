@@ -4,27 +4,31 @@ agent any
 stages{
 
    stage("source"){
-
-            // cloned git code url
-             sh "git clone https://github.com/cloudperis/spring-petclinic-main.git"
+           step {
+               sh "git clone https://github.com/cloudperis/spring-petclinic-main.git"
+           }
  }
 
 
  stage("Build"){
-
+step {
      echo "building application process"
+}
  }
 
 
   stage("test"){
- // testing my application in process
-      echo "testing application in process"
+      step {
+           echo "testing application in process"
+      }
+     
   } 
 
 
   stage("deploy"){
-
-      echo "deploying application in process"
+step {
+    echo "deploying application in process"
+}
   } 
 }
 
