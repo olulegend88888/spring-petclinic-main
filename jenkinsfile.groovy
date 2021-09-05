@@ -40,9 +40,16 @@ pipeline {
        stage('Deploy-Dev'){
             steps{
                 echo 'deploying application updates....'
-                withAWS(credentials: 'Jenkins-user', region: 'us-east-1'){
-                 sh 'aws ec2 reboot-instances --instance-ids ${params.devserver}'
-                }
+                withCredentials([[
+                      $class: 'AmazonWebServicesCredentialsBinding',
+                      credentialsId: "Jenkins-aws",
+                      accessKeyVariable: 'AWS_ACCESS_KEY_ID',
+                      secretKeyVariable: 'AWS_SECRET_ACCESS_KEY']]) {
+
+                          sh 'aws ec2 reboot-instances --instance-ids ${params.devserver}'
+                      }
+
+
             }
         }
 
