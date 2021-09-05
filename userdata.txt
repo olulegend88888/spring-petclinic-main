@@ -1,11 +1,16 @@
 #!/bin/bash
 # install updates
+BUCKET=app-seun-pet-clinic
 yum update -y
 
 sudo amazon-linux-extras install java-openjdk11
 
-yum remove java-1.7.0-openjdk -y
+cd ~
 
-aws s3 cp s3://app-seun-pet-clinic/spring-petclinic-2.4.5.jar . --region=us-east-1
+rm ~/*
 
-java -jar spring-petclinic-2.4.5.jar
+OBJECT="$(aws s3 ls $BUCKET --recursive | sort | tail -n 1 | awk '{print $4}')"
+aws s3 cp s3://$BUCKET/$OBJECT . --region=us-east-1
+app="$(ls)"
+
+java -jar $app
