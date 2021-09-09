@@ -62,5 +62,8 @@ pipeline {
         success{
            slackSend channel: 'jenkins-notifications', message: "SUCCESS ${env.JOB_NAME} at ${BUILD_TIMESTAMP}" 
         }
+        failure{
+            slackSend channel: 'jenkins-notifications', message: "FAILURE ${env.JOB_NAME} at ${BUILD_TIMESTAMP}"
+        }
     }
 }
