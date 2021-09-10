@@ -1,0 +1,43 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: A sample template
+Parameters:
+  InstanceType:
+    Description: server ec2 type
+    Type: String
+    Default: t2.small
+  Ec2SecurityGroup:
+    Description: security group of the instance
+    Type: CommaDelimitedList
+    ConstraintDescription: must be an existing security group.
+  Subnet:
+    Description: the subnet the instance should be attached to
+    Type: String
+  AMI:
+    Description: Golden Image
+    Type: String
+Resources:
+  MyEC2Instance: #An inline comment
+    Type: "AWS::EC2::Instance"
+    Metadata:
+      'AWS::Cloudformation::Init':
+    Properties: 
+      ImageId: "ami-0ff8a91507f77f867" #Another comment -- This is a Linux AMI
+      InstanceType: !Ref InstanceType
+      SecurityGroups:
+      - !Ref Ec2SecurityGroup
+      KeyName: testkey
+      BlockDeviceMappings:
+        -
+          DeviceName: /dev/sdm
+          Ebs:
+            VolumeType: io1
+            Iops: 200
+            DeleteOnTermination: false
+            VolumeSize: 20
+    UserData:
+      Fn::Base64: !Sub |
+          #!/bin/bash -xe
+          yum install ec2-net-utils -y
+          ec2ifup eth1
+          service httpd start
+          
