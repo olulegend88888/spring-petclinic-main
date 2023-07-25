@@ -23,7 +23,7 @@ pipeline {
         stage('Test') {
             steps {
                junit '**/target/surefire-reports/TEST-*.xml'
-               sh 'ls' 
+               sh 'cd target & cd surefire-reports & ls ' 
             }
         }
 
