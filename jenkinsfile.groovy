@@ -12,7 +12,7 @@ pipeline {
         
         stage('Build') {
             steps{
-                slackSend channel: 'jenkins-notifications', color: '#2211d9', message: "STARTED ${env.JOB_NAME} at #${env.BUILD_NUMBER}:\n${env.BUILD_URL}"
+                
                 sh "mvn package"
 
             }
@@ -22,8 +22,7 @@ pipeline {
             
         stage('Test') {
             steps {
-               junit '**/target/surefire-reports/TEST-*.xml'
-               sh 'cd target & cd surefire-reports & ls ' 
+               junit '**/target/surefire-reports/TEST-*.xml' 
             }
         }
 
