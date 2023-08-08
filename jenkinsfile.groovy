@@ -6,9 +6,11 @@ pipeline {
         
     }
 
+
+
     stages {
         
-        stage('Build 6') {
+        stage('Build') {
             steps{
                 slackSend channel: 'bode-alert', color: '#2211d9', message: "STARTED ${env.JOB_NAME} at #${env.BUILD_NUMBER}:\n${env.BUILD_URL}"
                 sh "mvn package"
@@ -17,10 +19,11 @@ pipeline {
 
         }
 
-
+            
         stage('Test') {
             steps {
-               junit '**/target/surefire-reports/TEST-*.xml' 
+               junit '**/target/surefire-reports/TEST-*.xml'
+               sh 'cd target & cd surefire-reports & ls ' 
             }
         }
 
@@ -47,7 +50,6 @@ pipeline {
 
                           
                           sh "aws ec2 reboot-instances --instance-ids i-0e1862772a5afb538 --region us-east-2"
-
 
                       }
 
