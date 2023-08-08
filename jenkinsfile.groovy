@@ -6,11 +6,9 @@ pipeline {
         
     }
 
-
-
     stages {
         
-        stage('Build') {
+        stage('Build 6') {
             steps{
                 slackSend channel: 'bode-alert', color: '#2211d9', message: "STARTED ${env.JOB_NAME} at #${env.BUILD_NUMBER}:\n${env.BUILD_URL}"
                 sh "mvn package"
@@ -19,7 +17,7 @@ pipeline {
 
         }
 
-            
+
         stage('Test') {
             steps {
                junit '**/target/surefire-reports/TEST-*.xml' 
@@ -38,17 +36,18 @@ pipeline {
             }
         }
 
-       stage('Deploy-Dev1'){
+       stage('Deploy-Dev'){
             steps{
                 echo 'deploying application updates....'
                 withCredentials([[
                       $class: 'AmazonWebServicesCredentialsBinding',
                       credentialsId: "jenkinss3",
                       accessKeyVariable: 'AWS_ACCESS_KEY_ID',
-                      secretKeyVariable: 'AWS_SECRET_ACCESS_KEY']]){ 
+                      secretKeyVariable: 'AWS_SECRET_ACCESS_KEY']]) {
 
-
+                          
                           sh "aws ec2 reboot-instances --instance-ids i-0e1862772a5afb538 --region us-east-2"
+
 
                       }
 
